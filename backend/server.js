@@ -12,7 +12,7 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow all origins for simplicity in dev
+    origin: "*",
     methods: ["GET", "POST"]
   }
 })
@@ -28,7 +28,7 @@ app.use('/api/workouts', workoutRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/rooms', roomRoutes)
 
-// Socket.io logic
+
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id)
 

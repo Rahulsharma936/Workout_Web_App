@@ -8,11 +8,11 @@ const roomSchema = new Schema({
         required: true
     },
     host: {
-        type: String, // Storing user ID or username
+        type: String,
         required: true
     },
     users: [{
-        type: String // List of user IDs currently in the room (optional, primarily managed by socket)
+        type: String
     }],
 }, { timestamps: true });
 

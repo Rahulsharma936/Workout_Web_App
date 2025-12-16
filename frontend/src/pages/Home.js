@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
 import { useAuthContext } from "../hooks/useAuthContext"
 
-// components
+
 import WorkoutDetails from '../components/WorkoutDetails'
 import WorkoutForm from '../components/WorkoutForm'
 
@@ -25,7 +25,7 @@ const Home = () => {
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-  // Fetch workouts from backend
+
   useEffect(() => {
     const fetchWorkouts = async () => {
       const response = await fetch(`${config.API_URL}/api/workouts`, {
@@ -45,7 +45,7 @@ const Home = () => {
     }
   }, [dispatch, user])
 
-  // Fetch rooms
+
   const fetchRooms = async () => {
     const response = await fetch(`${config.API_URL}/api/rooms`, {
       headers: {
@@ -80,9 +80,7 @@ const Home = () => {
 
     if (response.ok) {
       setNewRoomName('');
-      fetchRooms(); // refresh list
-      // Optionally navigate immediately
-      // navigate(/room/${json._id});
+      fetchRooms();
     }
   };
 
@@ -90,7 +88,7 @@ const Home = () => {
     navigate(`/room/${roomId}`);
   }
 
-  // Timer logic
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimers(prev => {
@@ -110,13 +108,13 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [isRunning]);
 
-  // Show day selector
+
   const openDaySelector = (workout) => {
     setSelectedWorkout(workout);
     setShowDaySelector(true);
   };
 
-  // Schedule workout
+
   const scheduleWorkout = (day) => {
     const scheduled = {
       ...selectedWorkout,
@@ -129,23 +127,23 @@ const Home = () => {
     alert(`Added to ${day}!`);
   };
 
-  // Delete scheduled workout
+
   const deleteScheduled = (id) => {
     setMyWorkouts(myWorkouts.filter(w => w.myWorkoutId !== id));
   };
 
-  // Get today's day name
+
   const getTodayName = () => {
     const daysMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     return daysMap[new Date().getDay()];
   };
 
-  // Get today's workouts
+
   const getTodayWorkouts = () => {
     return myWorkouts.filter(w => w.scheduledDay === getTodayName());
   };
 
-  // Timer controls
+
   const startTimer = (id) => {
     setIsRunning({ ...isRunning, [id]: true });
   };
@@ -168,7 +166,7 @@ const Home = () => {
     }
   };
 
-  // Format timer display
+
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -193,7 +191,7 @@ const Home = () => {
     <div className="home-container">
       <div className="home">
 
-        {/* Tabs */}
+
         <div className="tabs-container" style={{ gridColumn: '1 / -1', marginBottom: '20px' }}>
           <div style={{ display: 'flex', gap: '10px', borderBottom: '2px solid #e5e7eb' }}>
             <button
@@ -255,7 +253,7 @@ const Home = () => {
           </div>
         </div>
 
-        {/* All Workouts Tab */}
+
         {activeTab === 'allworkouts' && (
           <>
             <div className="workouts">
@@ -270,7 +268,7 @@ const Home = () => {
           </>
         )}
 
-        {/* My Workouts Tab */}
+
         {activeTab === 'myworkouts' && (
           <div style={{ gridColumn: '1 / -1' }}>
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '15px' }}>My Workouts</h2>
@@ -395,7 +393,7 @@ const Home = () => {
               ))
             )}
 
-            {/* All Scheduled */}
+
             <div style={{ background: '#f3f4f6', padding: '15px', borderRadius: '8px', marginBottom: '20px' }}>
               <h4 style={{ fontWeight: '600', marginBottom: '10px' }}>All Scheduled Workouts</h4>
               {myWorkouts.length === 0 ? (
@@ -415,7 +413,7 @@ const Home = () => {
           </div>
         )}
 
-        {/* Analysis Tab */}
+
         {activeTab === 'analysis' && (
           <div style={{ gridColumn: '1 / -1' }}>
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '15px' }}>Analysis</h2>
@@ -506,7 +504,7 @@ const Home = () => {
           </div>
         )}
 
-        {/* Community Tab */}
+
         {activeTab === 'community' && (
           <div style={{ gridColumn: '1 / -1' }}>
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '15px' }}>Community Rooms</h2>
@@ -587,7 +585,7 @@ const Home = () => {
         )}
       </div>
 
-      {/* Day Selector Modal */}
+
       {showDaySelector && (
         <div style={{
           position: 'fixed',

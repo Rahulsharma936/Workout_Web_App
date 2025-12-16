@@ -1,7 +1,7 @@
 const Room = require('../models/roomModel');
 const mongoose = require('mongoose');
 
-// get all rooms
+
 const getRooms = async (req, res) => {
     try {
         const rooms = await Room.find({}).sort({ createdAt: -1 });
@@ -11,7 +11,7 @@ const getRooms = async (req, res) => {
     }
 }
 
-// create a new room
+
 const createRoom = async (req, res) => {
     const { name } = req.body;
     const host = req.user._id;
@@ -24,7 +24,7 @@ const createRoom = async (req, res) => {
     }
 }
 
-// delete a room (optional, maybe when host leaves or explicitly)
+
 const deleteRoom = async (req, res) => {
     const { id } = req.params;
 

@@ -13,11 +13,10 @@ const Room = () => {
     const { user } = useAuthContext();
     const [roomName, setRoomName] = useState('Room');
 
-    // In a real app, you might fetch room details here
+
 
     useEffect(() => {
-        // Connect to the same host as the API
-        // For development proxies, might need exact URL
+
         const ENDPOINT = config.API_URL || 'http://localhost:4000';
         socket = io(ENDPOINT);
 
