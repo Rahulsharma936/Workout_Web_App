@@ -5,11 +5,19 @@ const mongoose = require('mongoose')
 const workoutRoutes = require('./routes/workouts')
 const userRoutes = require('./routes/user')
 const roomRoutes = require('./routes/rooms')
+const cors = require('cors')
 const http = require('http')
 const { Server } = require('socket.io')
 
 const app = express()
 const server = http.createServer(app)
+
+app.use(cors({
+  origin: ["https://workout-web-app3.onrender.com", "http://localhost:3000"],
+  methods: ["GET", "POST", "DELETE", "PATCH", "PUT"],
+  credentials: true
+}))
+
 const io = new Server(server, {
   cors: {
     origin: "*",
