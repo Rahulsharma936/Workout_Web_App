@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext"
 import { useAuthContext } from "../hooks/useAuthContext"
+import config from '../config'
 
 const WorkoutForm = () => {
   const { dispatch } = useWorkoutsContext()
@@ -22,7 +23,7 @@ const WorkoutForm = () => {
 
     const workout = { title, exercises, duration }
 
-    const response = await fetch('/api/workouts', {
+    const response = await fetch(`${config.API_URL}/api/workouts`, {
       method: 'POST',
       body: JSON.stringify(workout),
       headers: {
