@@ -2,32 +2,39 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
+const http = require('http')
+const { Server } = require('socket.io')
+
 const workoutRoutes = require('./routes/workouts')
 const userRoutes = require('./routes/user')
 const roomRoutes = require('./routes/rooms')
-const cors = require('cors')
-const http = require('http')
-const { Server } = require('socket.io')
 
 const app = express()
 const server = http.createServer(app)
 
-app.use(cors({
-  origin: "https://workout-web-app4.onrender.com",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-}));
 
-app.options("https://workout-web-app4.onrender.com", cors())
+const ALLOWED_ORIGIN = 'https://workout-web-app4.onrender.com'
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN)
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, DELETE, OPTIONS'
+  )
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization'
+  )
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
 
-const io = new Server(server, {
-  cors: {
-    origin: "https://workout-web-app4.onrender.com",
-    methods: ["GET", "POST"]
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200)
   }
+
+  next()
 })
+
 
 app.use(express.json())
 
@@ -36,17 +43,26 @@ app.use((req, res, next) => {
   next()
 })
 
+
 app.use('/api/workouts', workoutRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/rooms', roomRoutes)
 
 
+const io = new Server(server, {
+  cors: {
+    origin: ALLOWED_ORIGIN,
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+})
+
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id)
 
-  socket.on('join_room', (data) => {
-    socket.join(data)
-    console.log(`User with ID: ${socket.id} joined room: ${data}`)
+  socket.on('join_room', (room) => {
+    socket.join(room)
+    console.log(`User ${socket.id} joined room ${room}`)
   })
 
   socket.on('send_message', (data) => {
@@ -54,17 +70,18 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnect', () => {
-    console.log('User Disconnected', socket.id)
+    console.log('User disconnected:', socket.id)
   })
 })
 
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    console.log('connected to database')
+    console.log('Connected to MongoDB')
     server.listen(process.env.PORT, () => {
-      console.log('listening for requests on port', process.env.PORT)
+      console.log('Server listening on port', process.env.PORT)
     })
   })
   .catch((err) => {
-    console.log(err)
+    console.error('MongoDB connection error:', err)
   })
