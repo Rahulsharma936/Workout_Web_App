@@ -12,11 +12,19 @@ const { Server } = require('socket.io')
 const app = express()
 const server = http.createServer(app)
 
-app.use(cors())
+app.use(cors({
+  origin: "https://workout-web-app4.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
+app.options("https://workout-web-app4.onrender.com", cors())
+
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "https://workout-web-app4.onrender.com",
     methods: ["GET", "POST"]
   }
 })
