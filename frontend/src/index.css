@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* google font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap');
@@ -6,14 +9,18 @@
 :root {
   --primary: #1aac83;
   --error: #e7195a;
+  --bg-light: #f1f1f1;
+  --text-dark: #333;
+  --white: #fff;
 }
 body {
-  background: #f1f1f1;
+  background: var(--bg-light);
   margin: 0;
   font-family: "Poppins";
 }
 header {
-  background: #fff;
+  background: var(--white);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 header .container {
   max-width: 1400px;
@@ -24,9 +31,53 @@ header .container {
   justify-content: space-between;
 }
 header a {
-  color: #333;
+  color: var(--text-dark);
   text-decoration: none;
 }
+header h1 {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* navbar auth */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+nav a, nav button {
+  margin-left: 10px;
+  font-weight: 500;
+}
+nav button {
+  background: var(--white);
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Poppins";
+  font-size: 1em;
+  transition: all 0.3s;
+}
+nav button:hover {
+  background: var(--primary);
+  color: var(--white);
+}
+nav a.auth-link {
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+nav a.auth-link:hover {
+  background: #e6f7f2;
+  color: var(--primary);
+}
+nav span {
+  font-size: 0.9em;
+  color: #555;
+}
+
 .pages{
   max-width: 1400px;
   padding: 20px;
@@ -37,38 +88,51 @@ header a {
 .home {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  gap: 100px;
+  gap: 50px;
 }
+
+/* workout details */
 .workout-details {
-  background: #fff;
-  border-radius: 4px;
-  margin: 20px auto;
+  background: var(--white);
+  border-radius: 8px;
+  margin: 20px 0;
   padding: 20px;
   position: relative;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+.workout-details:hover {
+  transform: translateY(-2px);
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
 }
 .workout-details h4 {
   margin: 0 0 10px 0;
   font-size: 1.2em;
   color: var(--primary);
+  font-weight: 600;
 }
 .workout-details p {
-  margin: 0;
-  font-size: 0.9em;
+  margin: 6px 0;
+  font-size: 0.95em;
   color: #555;
 }
-.workout-details span {
+.workout-details span.material-symbols-outlined {
   position: absolute;
   top: 20px;
   right: 20px;
   cursor: pointer;
-  background: #f1f1f1;
+  background: #f8f8f8;
   padding: 6px;
   border-radius: 50%;
   color: #333;
+  transition: all 0.3s;
+}
+.workout-details span.material-symbols-outlined:hover {
+  background: #ffe6e6;
+  color: var(--error);
 }
 
-/* new workout form */
+/* forms */
 label, input {
   display: block;
 }
@@ -80,15 +144,30 @@ input {
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
+  font-family: "Poppins";
+}
+input:focus {
+  outline: none;
+  border-color: var(--primary);
 }
 form button {
   background: var(--primary);
   border: 0;
-  color: #fff;
+  color: var(--white);
   padding: 10px;
   font-family: "Poppins";
   border-radius: 4px;
   cursor: pointer;
+  width: 100%;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+form button:hover {
+  background: #158a6a;
+}
+form button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 div.error {
   padding: 10px;
@@ -97,7 +176,36 @@ div.error {
   color: var(--error);
   border-radius: 4px;
   margin: 20px 0;
+  font-size: 0.9em;
 }
 input.error {
   border: 1px solid var(--error);
+}
+
+/* auth forms */
+form.signup, form.login {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 30px;
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+form.signup h3, form.login h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: var(--text-dark);
+  text-align: center;
+}
+
+/* responsive */
+@media (max-width: 1024px) {
+  .home {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .workout-form {
+    margin-top: 20px;
+  }
 }
