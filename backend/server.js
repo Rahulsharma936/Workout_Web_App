@@ -13,10 +13,18 @@ const app = express()
 const server = http.createServer(app)
 
 
-const ALLOWED_ORIGIN = 'https://workout-web-app6.onrender.com'
+
+const ALLOWED_ORIGINS = [
+  'https://workout-web-app7.onrender.com'
+]
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN)
+  const origin = req.headers.origin
+
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin)
+  }
+
   res.setHeader(
     'Access-Control-Allow-Methods',
     'GET, POST, PUT, DELETE, OPTIONS'
@@ -27,13 +35,13 @@ app.use((req, res, next) => {
   )
   res.setHeader('Access-Control-Allow-Credentials', 'true')
 
-  // Handle preflight requests
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200)
   }
 
   next()
 })
+
 
 
 app.use(express.json())
@@ -44,14 +52,16 @@ app.use((req, res, next) => {
 })
 
 
+
 app.use('/api/workouts', workoutRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/rooms', roomRoutes)
 
 
+
 const io = new Server(server, {
   cors: {
-    origin: ALLOWED_ORIGIN,
+    origin: ALLOWED_ORIGINS,
     methods: ['GET', 'POST'],
     credentials: true
   }
@@ -62,7 +72,6 @@ io.on('connection', (socket) => {
 
   socket.on('join_room', (room) => {
     socket.join(room)
-    console.log(`User ${socket.id} joined room ${room}`)
   })
 
   socket.on('send_message', (data) => {
@@ -73,6 +82,7 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id)
   })
 })
+
 
 
 mongoose.connect(process.env.MONGO_URI)
