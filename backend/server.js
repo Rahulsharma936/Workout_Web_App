@@ -13,7 +13,7 @@ const app = express()
 const server = http.createServer(app)
 
 
-const ALLOWED_ORIGIN = 'https://workout-web-app4.onrender.com'
+const ALLOWED_ORIGIN = 'https://workout-web-app6.onrender.com'
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN)
